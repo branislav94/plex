@@ -1,15 +1,24 @@
 # Plex na Dokploy VM-u (192.168.0.25)
 # Putanje unutar kontejnera (/config, /smb_share, /transcode) su iste kao na starom TrueNAS setupu.
+# Bez network_mode: host — Dokploy sam dodaje dokploy-network, a to se ne slaže sa host modom.
 services:
   plex:
     container_name: plex
     image: lscr.io/linuxserver/plex:latest
-    network_mode: host # lokalno otkrivanje servera (TV, telefon); port 32400
     environment:
       - PUID=0
       - PGID=0
       - VERSION=docker
       - TZ=Europe/Belgrade
+    ports:
+      - 32400:32400/tcp     # Plex web / klijenti
+      - 8324:8324/tcp       # Roku (plex companion)
+      - 32469:32469/tcp     # DLNA
+      - 1900:1900/udp       # DLNA discovery
+      - 32410:32410/udp     # GDM lokalno otkrivanje servera
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
     volumes:
       - /opt/plex/config:/config               # lokalni disk VM-a (SQLite ne ide na NFS)
       - /mnt/storage/plex:/smb_share           # NFS sa TrueNAS-a (192.168.0.101)

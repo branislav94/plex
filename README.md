@@ -105,7 +105,7 @@ Pošto se kopira i `Preferences.xml`, server zadržava isti ID i claim, pa nema 
 
 1. Napravi projekat, pa **Create Service → Compose** (Docker Compose, izvor: Raw).
 2. Nalepi [`docker-compose.yml`](docker-compose.yml).
-3. **Deploy**. Domen ne treba, Plex ide direktno na port 32400.
+3. **Deploy**. Domen ne treba, Plex ide direktno na port 32400. (Provider može biti i GitHub: repo `branislav94/plex`, Compose Path `./docker-compose.yml`.)
 
 Dokploy radi preko Docker-a, pa su Stop/Start u Dokploy-u isto što i `docker stop plex` / `docker start plex` na VM-u.
 
@@ -155,6 +155,8 @@ Config više nije na ZFS-u, pa:
 | `bash: rsync: command not found` + `code 12` | rsync nije instaliran na VM-u | `apt install -y rsync` na VM-u |
 | `Permission denied` za root pri rsync-u | root SSH login lozinkom isključen | privremeno `PermitRootLogin yes` u `/etc/ssh/sshd_config`, pa vratiti |
 | Sve biblioteke sa ⚠️ | Plex pokrenut dok rsync nije završio | stop Plex → rsync do 100% → rsync `--delete` → start |
+| `declares mutually exclusive network_mode and networks` | Dokploy (GitHub izvor) dodaje `dokploy-network`, a ona se ne slaže sa `network_mode: host` | umesto host moda koristi `ports` (vidi `docker-compose.yml`) |
+| `Conflict. The container name "/plex" is already in use` | ostao kontejner iz prethodnog (Raw) deploy-a | obriši stari servis u Dokploy-u ili `docker rm -f plex`; podaci su u bind mountovima i ostaju |
 
 ## Rollback
 
