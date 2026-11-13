@@ -1,0 +1,4 @@
+# crontab -e na Dokploy VM-u
+# Svake noći u 3:30 kopija Plex config-a na TrueNAS (štite je ZFS snapshot-ovi)
+# Pre prvog pokretanja: mkdir -p /mnt/storage/plex/backup/plex-config
+30 3 * * * rsync -a --delete --exclude 'Library/Application Support/Plex Media Server/Cache' /opt/plex/config/ /mnt/storage/plex/backup/plex-config/

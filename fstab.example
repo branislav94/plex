@@ -1,0 +1,2 @@
+# /etc/fstab na Dokploy VM-u — NFS share sa TrueNAS-a
+192.168.0.101:/mnt/storage/plex  /mnt/storage/plex  nfs  defaults,_netdev,nofail,x-systemd.automount  0 0
